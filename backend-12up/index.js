@@ -1,21 +1,26 @@
 const express = require('express')
 const app = express()
-const port = 3000
-
+const mongoose =require( 'mongoose');
+const dotenv = require('dotenv')
 const cors= require('cors')
+const userRoutes= require('./routes/userRoutes')
 
+//dotenv
+dotenv.config();
+const PORT = process.env.PORT || 3000;
+
+//middlewares
 app.use(cors());
 app.use(express.json());
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
-app.post('/api/signup', (req, res) => {
-  console.log('Received signup data:', req.body);
-  res.status(201).json({ message: 'User registered successfully!' });
-  res.send("Yo received the data. I am proud of you")
-});
+//Routes
+// Routes
+app.use('/api/signup', userRoutes);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// Connect MongoDB & start server
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).catch(err => console.log("MongoDB connection failed:", err));

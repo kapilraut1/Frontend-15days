@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signupSchema } from './validationSchema';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function SignupForm() {
   const {
@@ -16,8 +17,8 @@ export default function SignupForm() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/signup', data);
-      alert("🎉 Signup successful!");
+      const res = await axios.post('http://localhost:3000/api/signup', data);
+     toast.success("Successfully logged in, Welcome Superadmin")
       console.log(res.data);
       reset(); // clears form
     } catch (err) {
@@ -43,12 +44,12 @@ export default function SignupForm() {
         </div>
         <div className="form-group">
           <label>Password</label>
-          <input type="password" {...register("password")} />
+          <input type="password" {...register("password")} name='password'/>
           <p className="error-message">{errors.password?.message}</p>
         </div>
         <div className="form-group">
           <label>Confirm Password</label>
-          <input type="password" {...register("confirmPassword")} />
+          <input type="password" name='confirmpassword'{...register("confirmPassword")} />
           <p className="error-message">{errors.confirmPassword?.message}</p>
         </div>
 
