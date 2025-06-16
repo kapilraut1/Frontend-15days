@@ -14,3 +14,6 @@ export const fetchUsers = async () => {
 
 export const createUser = (userData) =>
   axios.post(BASE_URL, userData).then(res => res.data);
+
+export const updateUser = (id, updatedFields) =>
+  axios.patch(`${BASE_URL}/${id}`, updatedFields).then(res => res.data);
