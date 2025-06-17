@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchUsers, createUser, updateUser } from './api';
+import { fetchUsers, createUser, updateUser, deleteUser } from './api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,6 +39,17 @@ const UserForm = () => {
     }
   });
 
+ const deleteMutation = useMutation({
+  mutationFn: deleteUser, // it receives an `id`
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['users'] });
+    toast.success("User deleted");
+  },
+  onError: () => {
+    toast.error("Failed to delete user");
+  }
+});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -58,6 +69,8 @@ const UserForm = () => {
     setForm({ name: user.name, email: user.email, password: user.password });
     setEditingUserId(user._id);
   };
+
+
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -80,6 +93,10 @@ const UserForm = () => {
               <button onClick={() => handleEdit(u)} style={{ marginLeft: "1rem" }}>
                 Edit
               </button>
+               <button onClick={() =>{ 
+                console.log(u._id)
+                deleteMutation.mutate(u._id)}}>Delete</button>
+             
             </li>
           ))}
         </ul>

@@ -17,3 +17,6 @@ export const createUser = (userData) =>
 
 export const updateUser = (id, updatedFields) =>
   axios.patch(`${BASE_URL}/${id}`, updatedFields).then(res => res.data);
+
+export const deleteUser = (id) =>
+  axios.delete(`${BASE_URL}/${id}`).then(res => res.data);
